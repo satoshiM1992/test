@@ -339,8 +339,12 @@ void WorldMap::mergeLandmarks(const Closure::ClosureConstraintVector& closures_)
             iterator_reference == landmark_references_to_queries_filtered.end()) {
 
           //ds we add new entries
-          landmark_queries_to_references_filtered.insert(std::make_pair(identifier_query, candidate_reference));
-          landmark_references_to_queries_filtered.insert(std::make_pair(identifier_reference, candidate_query));
+          if (!landmark_queries_to_references_filtered.insert(std::make_pair(identifier_query, candidate_reference)).second) {
+            LOG_WARNING(std::cerr << "WorldMap::mergeLandmarks|unable to insert query: " << identifier_query << std::endl);
+          }
+          if (!landmark_references_to_queries_filtered.insert(std::make_pair(identifier_reference, candidate_query)).second) {
+            LOG_WARNING(std::cerr << "WorldMap::mergeLandmarks|unable to insert reference: " << identifier_reference << std::endl);
+          }
         }
 
         //ds if we have a new reference for an already added query
@@ -351,11 +355,15 @@ void WorldMap::mergeLandmarks(const Closure::ClosureConstraintVector& closures_)
           if (matching_count > iterator_query->second.second) {
 
             //ds remove previous entry
-            landmark_references_to_queries_filtered.erase(iterator_query->second.first);
+            if (landmark_references_to_queries_filtered.erase(iterator_query->second.first) != 1) {
+              LOG_WARNING(std::cerr << "WorldMap::mergeLandmarks|unable to erase reference: " << iterator_query->second.first << std::endl);
+            }
 
             //ds update entries
-            iterator_query->second = candidate_query;
-            landmark_references_to_queries_filtered.insert(std::make_pair(identifier_reference, candidate_query));
+            iterator_query->second = candidate_reference;
+            if (!landmark_references_to_queries_filtered.insert(std::make_pair(identifier_reference, candidate_query)).second) {
+              LOG_WARNING(std::cerr << "WorldMap::mergeLandmarks|unable to insert reference: " << identifier_reference << std::endl);
+            }
           }
         }
 
@@ -367,17 +375,21 @@ void WorldMap::mergeLandmarks(const Closure::ClosureConstraintVector& closures_)
           if (matching_count > iterator_reference->second.second) {
 
             //ds remove previous entry
-            landmark_queries_to_references_filtered.erase(iterator_reference->second.first);
+            if (landmark_queries_to_references_filtered.erase(iterator_reference->second.first) != 1) {
+              LOG_WARNING(std::cerr << "WorldMap::mergeLandmarks|unable to erase query: " << iterator_reference->second.first << std::endl);
+            }
 
             //ds update entries
-            iterator_reference->second = candidate_reference;
-            landmark_queries_to_references_filtered.insert(std::make_pair(identifier_query, candidate_reference));
+            iterator_reference->second = candidate_query;
+            if (!landmark_queries_to_references_filtered.insert(std::make_pair(identifier_query, candidate_reference)).second) {
+              LOG_WARNING(std::cerr << "WorldMap::mergeLandmarks|unable to insert query: " << identifier_query << std::endl);
+            }
           }
         }
       }
+      assert(landmark_queries_to_references_filtered.size() == landmark_references_to_queries_filtered.size());
     }
   }
-  assert(landmark_queries_to_references_filtered.size() == landmark_references_to_queries_filtered.size());
 
   //ds map of merged landmark identfiers in case of multi-merges
   std::map<Identifier, Identifier> merged_landmark_identifiers;

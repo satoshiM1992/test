@@ -41,7 +41,6 @@ Landmark::~Landmark() {
     assert(!_origin->previous());
     FramePoint* point = _origin;
     while (point) {
-      assert(point == point->next());
       point->setLandmark(nullptr);
       point = point->next();
     }

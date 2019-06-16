@@ -35,7 +35,7 @@ add_definitions(-DSRRG_PROSLAM_DESCRIPTOR_SIZE_BITS=256)
 add_definitions(-DSRRG_PROSLAM_LOG_LEVEL=2)
 
 #ds enable descriptor merging in HBST (and other SRRG components) - careful for collisions with landmark merging!
-add_definitions(-DSRRG_MERGE_DESCRIPTORS)
+#add_definitions(-DSRRG_MERGE_DESCRIPTORS)
 
 #ds load Eigen library
 find_package(Eigen3 REQUIRED)
