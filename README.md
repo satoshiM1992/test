@@ -1,7 +1,7 @@
     
     ProSLAM: Programmers SLAM
 
-Contributors: Dominik Schlegel, Mirco Colosi, Giorgio Grisetti <br/>
+[![pipeline status](https://gitlab.com/srrg-software/srrg_proslam/badges/master/pipeline.svg)](https://gitlab.com/srrg-software/srrg_proslam/commits/master) Contributors: Dominik Schlegel, Mirco Colosi, Giorgio Grisetti <br/>
 
 **ProSLAM uses the lightning-fast, header-only [HBST library](https://gitlab.com/srrg-software/srrg_hbst) for binary descriptor similarity search (loop closing)**
 
