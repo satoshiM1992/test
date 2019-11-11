@@ -11,6 +11,7 @@ before_script:
   - apt install python-catkin-tools -y
   - apt install build-essential -y
   - apt install libeigen3-dev -y
+  - apt install libsuitesparse-dev -y
   - apt install libyaml-cpp-dev -y
 
   #ds set up g2o (in RELEASE)
