@@ -30,7 +30,8 @@ before_script:
   #ds link this repository for build
   - ln -s /builds/srrg-software/srrg_proslam srrg_proslam
 
-  #ds fetch dependencies
+  #ds fetch proslam SRRG dependencies
+  - cd srrg_proslam
   - ./pull_srrg_packages.bash
 
   #ds move back to catkin workspace level
