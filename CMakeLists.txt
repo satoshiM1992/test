@@ -12,7 +12,7 @@ message("${PROJECT_NAME}|build type: '${CMAKE_BUILD_TYPE}'")
 
 #ds flags for release build
 if("${CMAKE_BUILD_TYPE}" STREQUAL "Release" OR "${CMAKE_BUILD_TYPE}" STREQUAL "RELEASE")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -Werror -pedantic -Ofast -DNDEBUG")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -march=native -Wall -Werror -pedantic -Ofast -DNDEBUG")
   message("${PROJECT_NAME}|adding flags for '${CMAKE_BUILD_TYPE}': '-std=c++11 -Wall -Werror -pedantic -Ofast -DNDEBUG'")
   
 #ds flags for other build(s) (e.g. debug)
@@ -209,5 +209,7 @@ catkin_package(
 )
 
 #ds set sources
+message("${PROJECT_NAME}|final flags: '${CMAKE_CXX_FLAGS}'")
 add_subdirectory(src)
 add_subdirectory(executables)
+
