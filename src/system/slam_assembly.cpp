@@ -667,6 +667,15 @@ void SLAMAssembly::printReport() const {
             << " (of total landmarks: " << static_cast<real>(_world_map->numberOfMergedLandmarks())/_world_map->landmarks().size() <<  ")" << std::endl;
   std::cerr << "  number of recursive registrations: " << _tracker->numberOfRecursiveRegistrations() << std::endl;
 
+  {
+    std::string timings_filename = "timing_proslam.txt";
+    std::cout << "dumping timings in [ " << timings_filename << " ]\n";
+    std::ofstream stream(timings_filename, std::ofstream::out);
+    stream << "total_frames= " << _number_of_processed_frames << " total_compute_time= " << _processing_time_total_seconds
+           << " mean_frame_time= " << processing_time_mean_seconds << " mean_frame_hz= " << 1./processing_time_mean_seconds
+           << std::endl;
+    stream.close();
+  }
   //ds display further information depending on tracking mode
   switch (_parameters->command_line_parameters->tracker_mode){
     case CommandLineParameters::TrackerMode::RGB_STEREO: {

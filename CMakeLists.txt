@@ -12,9 +12,9 @@ message("${PROJECT_NAME}|build type: '${CMAKE_BUILD_TYPE}'")
 
 #ds flags for release build
 if("${CMAKE_BUILD_TYPE}" STREQUAL "Release" OR "${CMAKE_BUILD_TYPE}" STREQUAL "RELEASE")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -march=native -Wall -Werror -pedantic -Ofast -DNDEBUG")
-  message("${PROJECT_NAME}|adding flags for '${CMAKE_BUILD_TYPE}': '-std=c++11 -Wall -Werror -pedantic -Ofast -DNDEBUG'")
-  
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -fPIC -std=c++11 -Wall -Werror -pedantic -DNDEBUG")
+  message("${PROJECT_NAME}|adding flags for '${CMAKE_BUILD_TYPE}': '-O3 -fPIC -std=c++11 -Wall -Werror -pedantic -DNDEBUG'")
+
 #ds flags for other build(s) (e.g. debug)
 else()
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -Werror -pedantic -O0 -g -fstack-check")
@@ -63,7 +63,7 @@ if("$ENV{ROS_DISTRO}" STREQUAL "kinetic" OR "$ENV{ROS_DISTRO}" STREQUAL "indigo"
     message_filters
     image_geometry
   )
-  
+
   #ds switch to ROS opencv libraries without calling find_package to avoid conflicts with other existing OpenCV installations
   set(OpenCV_DIR "ROS")
   set(OpenCV_LIBS ${catkin_LIBRARIES})
@@ -78,7 +78,7 @@ else()
     srrg_core_viewers
     srrg_hbst
   )
-  
+
   #ds OpenCV - OpenCV_DIR might be overwritten by user
   find_package(OpenCV REQUIRED)
   message("${PROJECT_NAME}|using OpenCV version: '${OpenCV_VERSION}' (${OpenCV_DIR})")
@@ -120,11 +120,11 @@ if("${G2O_SRRG_DIR}" STREQUAL "")
 
   #ds check if theres also no srrg g2o installation
   if("$ENV{G2O_ROOT}" STREQUAL "")
-  
+
     #ds no custom g2o installation found, fallback to catkin g2o
     message("${PROJECT_NAME}|using catkin g2o")
   else()
-  
+
     #ds use custom g2o
     message("${PROJECT_NAME}|using custom g2o: '$ENV{G2O_ROOT}'")
     set(SRRG_PROSLAM_HAS_OWN_G2O true)
@@ -147,7 +147,7 @@ else()
 
   #ds attempt to find a catkin g2o
   find_package(g2o_catkin REQUIRED)
-  
+
     #ds add it to our variables
   set(g2o_INCLUDE_DIRS ${g2o_catkin_INCLUDE_DIRS})
   set(g2o_LIBRARIES ${g2o_catkin_LIBRARIES})
@@ -186,17 +186,17 @@ catkin_package(
   src
 
   LIBRARIES
-  
+
   #ds package libraries
-  srrg_proslam_aligners_library 
-  srrg_proslam_framepoint_generation_library 
-  srrg_proslam_map_optimization_library 
-  srrg_proslam_position_tracking_library 
-  srrg_proslam_relocalization_library 
-  srrg_proslam_types_library 
-  srrg_proslam_visualization_library 
+  srrg_proslam_aligners_library
+  srrg_proslam_framepoint_generation_library
+  srrg_proslam_map_optimization_library
+  srrg_proslam_position_tracking_library
+  srrg_proslam_relocalization_library
+  srrg_proslam_types_library
+  srrg_proslam_visualization_library
   srrg_proslam_slam_assembly_library
-  
+
   #ds export the used libraries in this project (consistency for integration)
   ${g2o_LIBRARIES}
   ${CSPARSE_LIBRARY}
@@ -212,4 +212,3 @@ catkin_package(
 message("${PROJECT_NAME}|final flags: '${CMAKE_CXX_FLAGS}'")
 add_subdirectory(src)
 add_subdirectory(executables)
-
